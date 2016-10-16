@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     String username, firstname, lastname;
     TextView tv_profile_name;
     ImageView iv_profile_pic;
+    ImageView meetup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         tv_profile_name = (TextView) findViewById(R.id.tv_profile_name);
         iv_profile_pic = (ImageView) findViewById(R.id.iv_profile_pic);
+        meetup=(ImageView) findViewById(R.id.meerup_background);
+        iv_profile_pic.setVisibility(View.INVISIBLE);
 
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-
+                meetup.setVisibility(View.INVISIBLE);
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -92,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                                     String imageurl = "https://graph.facebook.com/" + id + "/picture?type=large";
 
                                     Picasso.with(MainActivity.this).load(imageurl).into(iv_profile_pic);
+                                    iv_profile_pic.setVisibility(View.VISIBLE);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
